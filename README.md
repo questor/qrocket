@@ -1,5 +1,5 @@
-GNU Rocket OpenGL editor
-========================
+GNU Rocket OpenGL editor (slightly improved and protocol changed!)
+==================================================================
 
 Beta Disclaimer
 ---------------
@@ -9,22 +9,14 @@ First a screenshot of how it looks:
 
 Regular disclaimer: Backup your stuff before using the software :)
 
-If you encounter any issues please try to report them at https://github.com/emoon/rocket/issues as
-this would make my life much easier and I will try to fix them given time. Hopefully the editor should be useful even if still not 100% finalized bug wise.
-Also the documentation hasn't been completed yet.
+THIS IS A MODIFIED VERSION OF THE ORIGINAL https://github.com/emoon/rocket, BUT IF YOU FIND ERRORS PLEASE DON'T REPORT IT TO EMOON!
 
-Here are the links to the current version of the editor:
-
-* macOS: https://www.dropbox.com/s/toaiyfgzue9fm2v/RocketEditor1.2beta.zip?dl=1
-* Windows: https://www.dropbox.com/s/ounkv6bcou5pgwe/RocketEditor1.2beta-Win.zip?dl=1
 
 About
 -----
 
 RocketEditor is coded by Daniel 'emoon' Collin with documentation and testing by Heine 'bstrr' Gundersen.
 Daniel Collin can be contacted at daniel aat collin dot com
-
-Latest version of this program should be available at https://github.com/emoon/rocket
 
 The SDL-based linux support is written by Konsta 'sooda' Hölttä at https://github.com/sooda/rocket, and later updated to use SDL2 by Lauri 'gustafla' Gustafsson at https://github.com/gustafla/rocket
 
@@ -54,25 +46,6 @@ Building the code
 All macOS, Windows and Linux versions use the Tundra build system (https://github.com/deplinenoise/tundra) so in order to build the code you need a tundra executable for your OS.
 For macOS and Windows the binaries are included within the repo, but for Linux see the build instructions bellow.
 
-macOS
------
-
-To build on mac enter the rocket/ogl_rocket directory and run "bin/mac/tundra2 macosx-clang-debug" (or -release for release build) and in tundra-output you will find the app to run.
-To use Xcode to build (or code in) use the XCode3-GenerateProj.sh file (works with Xcode 4.x also) and open the generated project in xcode (it's inside the tundra-output directory)
-
-Windows
--------
-
-To build the code run in debug run: `scripts\win32_build_debug.cmd` and run the executable in `t2-output\win32-msvc-debug-default\editor.exe` (Visual Studio 2019 required) 
-If you want a VS solution instead you can run `scripts\win32_gen_vs_solution.cmd` and `scripts\win32_launch_vs.cmd`
-
-
-```
-git clone --depth=1 --recursive https://github.com/emoon/rocket
-cd rocket
-scripts\win32_build_debug.cmd
-t2-output\win32-msvc-debug-default\editor.exe
-```
 
 Linux
 -----
@@ -99,7 +72,7 @@ Install rocket No project files are generated - Tundra builds the editor straigh
 ```
 git clone --depth=1 --retursive https://github.com/emoon/rocket
 cd rocket
-./linux-build.sh
+./scripts/linux-build.sh
 ```
 
 Install `libbass.so` from the repo folder:
@@ -142,58 +115,6 @@ Tips & tricks
 Keys
 ----
 
-### macOS:
-
-#### Editing:
-
-Key | Action
---- | ---
-0-9                 | Edit value
-Esc                 | Cancel edit
-QWERTY              | Bias selection +0.01, +0.1, +1, +10, +100, +1000
-ASDFGH              | Bias selection -0.01, -0.1, -1, -10, -100, -1000
-Alt+Trackpad scroll | Bias selection +1/-1
-Shift+Alt+Trackpad  | Bias selection +10/-10
-I                   | Toggle interpolation (step/linear/smooth/ramp)
-Return              | Insert current interpolated value
-Shift+Arrows        | Select
-Cmd+T               | Select all keys in track
-Cmd+X               | Cut
-Cmd+C               | Copy
-Cmd+V               | Paste
-Cmd+Z               | Undo
-Cmd+Shift+Z         | Redo
-Delete              | Delete key
-
-#### View:
-
-Key | Action
---- | ---
-Space               | Start/Stop
-Arrows              | Move cursor around
-Alt+Up/Down         | Jump 8 rows
-Alt+Cmd+Up/Down     | Jump to StartRow/NextBookmark - PrevBookmark/EndRow
-Cmd+Left/Right      | Jump to first/last track
-Ctrl+Up/Down        | Jump to Previous/Next key in current track
-Alt+Left/Right      | Fold/Unfold track
-Ctrl+Alt+Left/Right | Fold/Unfold group
-Trackpad scroll     | Scroll
-B                   | Toggle Bookmark
-Cmd+B               | Clear all Bookmarks
-Tab                 | Jump between Row, Start Row, End Row, Track editing
-
-#### Files:
-
-Key | Action
---- | ---
-Cmd+O               | Open file
-Cmd+S               | Quicksave
-Cmd+Shift+S         | Save as
-Cmd+1/2/3/4         | Quickload recent files
-Cmd+E               | Remote export
-
----------------------------------------------------------------------------------
-
 ### Windows and Linux:
 
 #### Editing:
@@ -205,6 +126,7 @@ Esc                 | Cancel edit
 QWERTY              | Bias selection +0.01, +0.1, +1, +10, +100, +1000
 ASDFGH              | Bias selection -0.01, -0.1, -1, -10, -100, -1000
 I                   | Toggle interpolation (step/linear/smooth/ramp)
+Ctrl+I              | Invert selection
 Return              | Insert current interpolated value
 Shift+Arrows        | Select
 Ctrl+T              | Select all keys in track
@@ -213,13 +135,23 @@ Ctrl+C              | Copy
 Ctrl+V              | Paste
 Ctrl+Z              | Undo
 Ctrl+Shift+Z        | Redo
-Delete              | Delete key
+Delete/Backspace    | Delete key
+C                   | Move selection up
+X                   | Move selection down
+K                   | Offset Track +1
+Ctrl+K              | Offset Track +8
+L                   | Offset Track -1
+Ctrl+L              | Offset Track -8
+Shift+K             | Offset Group +8
+Shift+L             | Offset Group -8
+
 
 #### View:
 
 Key | Action
 --- | ---
 Space               | Start/Stop
+Ctrl+Space          | StartLoop
 Arrows              | Move cursor around
 Alt+Up/Down         | Jump 8 rows
 Ctrl+Alt+Up/Down    | Jump to StartRow/NextBookmark - PrevBookmark/EndRow
@@ -231,6 +163,9 @@ Trackpad scroll     | Scroll
 B                   | Toggle Bookmark
 Ctrl+B              | Clear all Bookmarks
 Tab                 | Jump between Row, Start Row, End Row, Track editing
+M                   | Mute/Unmute
+Z                   | Toggle loopmark
+Ctrl+Z              | Clear loopmarks
 
 #### Files:
 
@@ -241,4 +176,5 @@ Ctrl+S              | Quicksave
 Ctrl+Shift+S        | Save as
 Ctrl+1/2/3/4        | Quickload recent files
 Ctrl+E              | Remote export
-
+Ctrl+L              | Load Music
+Ctrl+W              | Quit
