@@ -1228,6 +1228,33 @@ static void onSelectTrack() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+static void onSetInterpolation(int type) {
+    int idx;
+    struct track_key newKey;
+    struct sync_track* track;
+    struct sync_track** tracks = getTracks();
+
+    if (!tracks)
+        return;
+
+    track = tracks[getActiveTrack()];
+
+    if (!canEditCurrentTrack())
+        return;
+
+    idx = key_idx_floor(track, getRowPos());
+    if (idx < 0)
+        return;
+
+    newKey = track->keys[idx];
+    newKey.type = type;
+
+    Commands_addOrUpdateKey(getActiveTrack(), &newKey);
+    updateNeedsSaving();    
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 static void onInterpolation() {
     int idx;
     struct track_key newKey;
@@ -1830,6 +1857,13 @@ void Editor_menuEvent(int menuItem) {
             break;
         case EDITOR_MENU_SCALE_001:
             scaleSelection(0.01f);
+            break;
+
+        case EDITOR_MENU_SETSTEP:
+        case EDITOR_MENU_SETLINEAR:
+        case EDITOR_MENU_SETSMOOTH:
+        case EDITOR_MENU_SETRAMP:
+            onSetInterpolation(menuItem - EDITOR_MENU_SETSTEP);
             break;
 
         case EDITOR_MENU_INTERPOLATION:
